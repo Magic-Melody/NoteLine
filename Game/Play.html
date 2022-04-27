@@ -24,7 +24,7 @@
         }
         * {
             user-select: none;
-            
+            cursor: default;
         }
         /* 设置按钮的动画 */
         button:active {
@@ -434,6 +434,7 @@
             user-select: text;
         }
     </style>
+    <link rel="stylesheet" id="theme" type="text/css" id="theme"></style>
 </head>
 <body>
     <audio></audio>
@@ -472,15 +473,13 @@
             <br>
             <p>谱面制作：当一条咸鱼www</p>
             <p>程序设计：当一条咸鱼www</p>
-            <p>封面设计：当一条咸鱼www，Double H</p>
+            <p>美术设计：当一条咸鱼www，璨心丫</p>
             <p>程序开发：当一条咸鱼www</p>
             <p>音乐制作：当一条咸鱼www</p>
-            <p>界面设计：当一条咸鱼www</p>
             <p>界面设计：当一条咸鱼www</p>
             <br>
             <p>鸣谢：</p>
             <p>快乐jv君（宣传）</p>
-            <p>Double H（封面设计）</p>
         </div>
         
     </div>
@@ -674,13 +673,24 @@
                                 comboNum.innerHTML = combo + "";
                                 comboWords.innerHTML = "combo"
                             } else {
-                                // 判定为 miss ，combo清0
-                                console.log("miss");
-                                combo = 0;
-                                comboNum.innerHTML = "";
-                                comboWords.innerHTML = "";
+                                setTimeout (function() {
+                                    if(nowTime[0] - bornTime <= 1300 && nowTime[0] - bornTime >= 700) {
+                                        console.log("命中");
+                                        // 连击数增加
+                                        combo++;
+                                        // 更新界面上的连击数字
+                                        comboNum.innerHTML = combo + "";
+                                        comboWords.innerHTML = "combo"
+                                    } else {
+                                        // 判定为 miss ，combo清0
+                                        console.log("miss");
+                                        combo = 0;
+                                        comboNum.innerHTML = "";
+                                        comboWords.innerHTML = "";
+                                    }
+                                },200)
                             }
-                        },300)
+                        },100)
                     }
                 },1000)
                 
@@ -716,13 +726,24 @@
                                 comboNum.innerHTML = combo + "";
                                 comboWords.innerHTML = "combo"
                             } else {
-                                // 判定为 miss ，combo清0
-                                console.log("miss");
-                                combo = 0;
-                                comboNum.innerHTML = "";
-                                comboWords.innerHTML = "";
+                                setTimeout (function() {
+                                    if(nowTime[1] - bornTime <= 1300 && nowTime[1] - bornTime >= 700) {
+                                        console.log("命中");
+                                        // 连击数增加
+                                        combo++;
+                                        // 更新界面上的连击数字
+                                        comboNum.innerHTML = combo + "";
+                                        comboWords.innerHTML = "combo"
+                                    } else {
+                                        // 判定为 miss ，combo清0
+                                        console.log("miss");
+                                        combo = 0;
+                                        comboNum.innerHTML = "";
+                                        comboWords.innerHTML = "";
+                                    }
+                                },200)
                             }
-                        },300)
+                        },100)
                     }
                 
                 },1000)
@@ -758,13 +779,24 @@
                                 comboNum.innerHTML = combo + "";
                                 comboWords.innerHTML = "combo"
                             } else {
-                                // 判定为 miss ，combo清0
-                                console.log("miss");
-                                combo = 0;
-                                comboNum.innerHTML = "";
-                                comboWords.innerHTML = "";
+                                setTimeout (function() {
+                                    if(nowTime[2] - bornTime <= 1300 && nowTime[2] - bornTime >= 700) {
+                                        console.log("命中");
+                                        // 连击数增加
+                                        combo++;
+                                        // 更新界面上的连击数字
+                                        comboNum.innerHTML = combo + "";
+                                        comboWords.innerHTML = "combo"
+                                    } else {
+                                        // 判定为 miss ，combo清0
+                                        console.log("miss");
+                                        combo = 0;
+                                        comboNum.innerHTML = "";
+                                        comboWords.innerHTML = "";
+                                    }
+                                },200)
                             }
-                        },300)
+                        },100)
                     }
                     
                 },1000);
@@ -800,13 +832,25 @@
                                 comboNum.innerHTML = combo + "";
                                 comboWords.innerHTML = "combo"
                             } else {
-                                // 判定为 miss ，combo清0
-                                console.log("miss");
-                                combo = 0;
-                                comboNum.innerHTML = "";
-                                comboWords.innerHTML = "";
+                                
+                                setTimeout (function() {
+                                    if(nowTime[3] - bornTime <= 1300 && nowTime[3] - bornTime >= 700) {
+                                        console.log("命中");
+                                        // 连击数增加
+                                        combo++;
+                                        // 更新界面上的连击数字
+                                        comboNum.innerHTML = combo + "";
+                                        comboWords.innerHTML = "combo"
+                                    } else {
+                                        // 判定为 miss ，combo清0
+                                        console.log("miss");
+                                        combo = 0;
+                                        comboNum.innerHTML = "";
+                                        comboWords.innerHTML = "";
+                                    }
+                                },200)
                             }
-                        },300)
+                        },100)
                     }
                     
                 },1000);
@@ -908,5 +952,6 @@
     </script>
     <!-- 选择曲目界面的JS脚本文件 -->
     <script src="JS/ChooseMusic.js"></script>
+    <script src="JS/Activity.js"></script>
 </body>
 </html>
