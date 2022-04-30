@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    
     <title>NoteLine</title>
     <link rel="icon" href="icon/icon.png">
     <!-- 所有自带曲目的Json文件全部都在这里声明 -->
     <script src="JSON/song1.json"></script>
     <script src="JSON/song2.json"></script>
+    <script src="JSON/song3.json"></script>
     <style>
         *::-webkit-scrollbar {
             width: 5px;
@@ -25,7 +27,10 @@
         * {
             user-select: none;
             cursor: default;
+            outline: none;
+            touch-action: none;
         }
+        
         /* 设置按钮的动画 */
         button:active {
             transform: scale(0.7,0.7);
@@ -125,31 +130,40 @@
         #line1 .circle,
         #line1 .move,
         #line1 .judgment,
-        #line1 .btnOn {
+        #line1 .btnOn,
+        #line1 .touchJudgment,
+        #line1 .touchJudgmentOn {
             background-color: #FF8000;
         }
         #line2 .circle,
         #line2 .move,
         #line2 .judgment,
-        #line2 .btnOn {
+        #line2 .btnOn,
+        #line2 .touchJudgment,
+        #line2 .touchJudgmentOn {
             background-color: #00C4FF;
         }
         #line3 .circle,
         #line3 .move,
         #line3 .judgment,
-        #line3 .btnOn {
+        #line3 .btnOn,
+        #line3 .touchJudgment,
+        #line3 .touchJudgmentOn {
             background-color: #F4E624;
         }
         #line4 .circle,
         #line4 .move,
         #line4 .judgment,
-        #line4 .btnOn {
+        #line4 .btnOn,
+        #line4 .touchJudgment,
+        #line4 .touchJudgmentOn {
             background-color: #3FCD16;
         }
 
         /* 设置判断点样式和动画 */
         .judgment,
-        .btnOn {
+        .btnOn,
+        .touchPart {
             width: 60px;
             height: 60px;
             position: absolute;
@@ -165,6 +179,14 @@
         .btnOn {
             transform: scale(1.5,1.5);
         }
+        /* 触屏区域 */
+        .touchPart {
+            height: 1000px;
+            transform: scale(2.7,2.7);
+            border-radius: 0px !important;
+            opacity: 0;
+        }
+        
 
         /* 让播放器不显示 */
         audio {
@@ -172,20 +194,21 @@
         }
 
 
-        /* 设置界面上方的三个按钮的样式 */
+        /* 设置界面上方的按钮的样式 */
         #startBtn,
         #noteIn,
-        #musicChoose {
+        #musicChoose,
+        #setting {
             position: fixed;
-            font-family: "iconfont";
             color: rgba(37,37,37,0.6);
             background-color: transparent;
+            font-family: "iconfont";
             border: none;
             font-size: 36px;
             padding: 5px;
             transition: all 0.2s;
         }
-        /* 设置三个按钮各自的位置 */
+        /* 设置按钮各自的位置 */
         #startBtn {
             left: 0;
             top: 0;
@@ -200,13 +223,26 @@
             right: 50px;
             top: 0;
         }
+        #setting {
+            font-family: 'FluentIcons';
+            font-weight: bolder;
+            left: 0;
+            bottom: 0;
+            font-size: 25px;
+            transition: all 0.5s;
+        }
+        #setting:active {
+            transform: rotate(180deg) scale(0.7,0.7);
+            
+        }
 
         
         
-
+        /* 鼠标经过样式 */
         #startBtn:hover,
         #noteIn:hover,
-        #musicChoose:hover {
+        #musicChoose:hover,
+        #setting:hover {
             color: rgba(37,37,37,1);
         }
 
@@ -433,8 +469,45 @@
             font-weight: 600;
             user-select: text;
         }
+
+        /* 设置窗口 */
+        #settingBox {
+            transition: all 0.5s ease;
+            border-radius: 25px;
+            position: fixed;
+            left: calc(50% - 400px);
+            background-color: rgb(242, 242, 242);
+            height: 500px;
+            width: 800px;
+            overflow: auto;
+        }
+        .settingClose {
+            bottom: calc(0% - 500px);
+        }
+        .settingShow {
+            box-shadow: 0px 0px 67px -34px grey;
+            bottom: calc(50% - 250px);
+        }
+        /* 设置主要区域 */
+        .main {
+            margin-top: 75px;
+            width: 800px;
+            height: 425px;
+            overflow-x: auto;
+        }
+        /* 标题 */
+        #settingBox h1 {
+            margin-top: 10px;
+            position: absolute;
+            font-family: 'Microsoft YaHei';
+            top: 10px;
+            left: 20px;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
     </style>
-    <link rel="stylesheet" id="theme" type="text/css" id="theme"></style>
+    <link rel="stylesheet" id="theme" type="text/css">
+    <link rel="stylesheet" href="" id="touchCSS" type="text/css">
 </head>
 <body>
     <audio></audio>
@@ -443,24 +516,29 @@
     <button id="noteIn">&#xea45</button>
     <button id="startBtn">&#xe655</button>
     <button id="musicChoose">&#xeb90</button>
+    <button id="setting" onclick="openSetting()">&#xe713</button>
     <!-- 连击显示 -->
     <div id="comboNum">
         <span class="num"></span><br>
         <span class="words"></span>
     </div>
     <!-- 那四条线 -->
-    <div class="lineClass">
+    <div class="lineClass" ondragstart="window.event.returnValue=false" oncontextmenu="window.event.returnValue=false">
         <div class="line" id="line1" style="border-color: #FF8000;">
             <div class="judgment"></div>
+            <div class="touchPart"></div>
         </div>
         <div class="line" id="line2" style="border-color: #00C4FF;">
             <div class="judgment"></div>
+            <div class="touchPart"></div>
         </div>
         <div class="line" id="line3" style="border-color: #F4E624;">
             <div class="judgment"></div>
+            <div class="touchPart"></div>
         </div>
         <div class="line" id="line4" style="border-color: #3FCD16;">
             <div class="judgment"></div>
+            <div class="touchPart"></div>
         </div>
         
     </div>
@@ -497,6 +575,10 @@
                 <img src="SongPictures/song2.png" alt="" class="songPic">
                 <span>Boring</span>
             </div>
+            <div class="song" id="song3">
+                <img src="SongPictures/default.png" alt="" class="songPic">
+                <span>Dilemma</span>
+            </div>
         </div>
         
     </div>
@@ -512,7 +594,11 @@
             <span class="words">导入音乐</span>
         </div>
     </div>
-    
+    <div class="settingClose" id="settingBox">
+        <button class="closeBtn" onclick="closeSettingBox()">&#xe711</button>
+        <h1>设置</h1>
+        <div class="main"></div>
+    </div>
     <script>
         // 获取元素
         // 那四条线
@@ -545,8 +631,7 @@
         var nowTime = [0,0,0,0];
         // 音符生成的数量
         var time = [0,0,0,0];
-
-
+        
         // 设置生成音符的回调函数
         var w1;
         var w2;
@@ -622,6 +707,11 @@
             filesInput.click();
         }
 
+        // 设置
+        function openSetting() {
+            document.querySelector("#settingBox").className = "settingShow";
+        }
+
         // 关闭选择曲目的窗口
         function closeBoxMusic() {
             document.querySelector("#showMusic").className = "close";
@@ -629,6 +719,10 @@
         // 关闭导入文件窗口
         function closeBoxFile() {
             document.querySelector("#fileIn").className = "fileBoxClose"
+        }
+        // 关闭设置窗口
+        function closeSettingBox() {
+            document.querySelector("#settingBox").className = "settingClose";
         }
 
 
@@ -885,19 +979,6 @@
         }
 
 
-        
-
-
-
-        // 绑定事件
-        for (let i = 0; i < judgment.length; i++) {
-            judgment[i].onclick = function() {
-                nowTime[i] = new Date().getTime();
-                var audio2 = new Audio("audio/audio2.mp3");
-                // audio2.play();
-            }
-        }
-
         // 绑定键盘事件
         document.onkeydown = function(even) {
             var code = even.keyCode;
@@ -947,11 +1028,13 @@
             }
         }
 
+
         
         
     </script>
     <!-- 选择曲目界面的JS脚本文件 -->
     <script src="JS/ChooseMusic.js"></script>
     <script src="JS/Activity.js"></script>
+    <script src="JS/Touch.js"></script>
 </body>
 </html>

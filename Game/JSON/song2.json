@@ -382,5 +382,6 @@ var song2Data = {
             "start": "end"
         }
     },
-    "musicLong": 53205
+    "musicLong": 53205,
+    "name":"New Journey!"
 }

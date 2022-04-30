@@ -26,6 +26,12 @@ songBox.querySelector("#song2").onclick = function() {
     musicPlay.src = "Song/song2.mp3";
 }
 
+songBox.querySelector("#song3").onclick = function() {
+    noteData = song3Data;
+    closeTheMusicWindow();
+    musicPlay.src = "Song/song3.mp3";
+}
+
 function closeTheMusicWindow() {
     document.querySelector("#showMusic").className = "close";
     startBtn.click();

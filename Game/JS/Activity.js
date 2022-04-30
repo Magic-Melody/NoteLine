@@ -3,7 +3,8 @@ var month = new Date().getMonth() + 1;
 var day = month + "-" + date;
 switch (day) {
     case "4-23":
-        alert("HelloWorld!")
+        console.log("HelloWorld!");
+        document.getElementById("theme").setAttribute("href","ActivityTheme/CaiXin_Brithday.css");
     case "6-18":
         document.getElementById("theme").setAttribute("href","ActivityTheme/SaltFish_Brithday.css");
         break;
