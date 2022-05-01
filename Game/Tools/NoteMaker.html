@@ -10,6 +10,7 @@
         * {
             outline: none;
         }
+
         input {
             height: 25px;
             border: none;
@@ -17,10 +18,12 @@
             box-sizing: border-box;
             transition: all 0.2s;
         }
+
         input:focus {
             border: none;
             border-bottom: #00C4FF 3px solid;
         }
+
         .ctrl {
             background-color: rgba(244, 230, 36, 0.7);
             margin-left: 10px;
@@ -31,11 +34,13 @@
             transition: all 0.2s;
             position: relative;
         }
+
         .ctrl:hover {
             background-color: rgba(244, 230, 36, 1);
         }
+
         .ctrl:active {
-            transform: scale(1.1,1.1);
+            transform: scale(1.1, 1.1);
         }
 
         .buttons {
@@ -56,7 +61,7 @@
             margin-bottom: 10px;
             margin-left: 30px;
             transition: all 0.1s;
-            
+
         }
 
         .note {
@@ -66,7 +71,7 @@
         .note:active,
         .noteOn {
             background-color: #0048ff;
-            transform: scale(1.1,1.1);
+            transform: scale(1.1, 1.1);
         }
 
 
@@ -90,11 +95,12 @@
         .teachingHide {
             display: none;
         }
+
         .teaching {
             width: 200px;
             height: 50px;
-            background-color: rgba(63,205,22,0.7);
-            box-shadow: 1px 1px 40px 3px rgba(26, 26, 26,0);
+            background-color: rgba(63, 205, 22, 0.7);
+            box-shadow: 1px 1px 40px 3px rgba(26, 26, 26, 0);
             font-size: 14px;
             position: fixed;
             top: calc(0% - 60px);
@@ -108,32 +114,38 @@
             animation-name: DownThenUp;
             animation-duration: 3s;
         }
-        @keyframes DownThenUp{
+
+        @keyframes DownThenUp {
             0% {
                 top: calc(0% - 60px);
-                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26,0.0);
+                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26, 0.0);
             }
+
             30% {
                 top: 5%;
-                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26,0.3);
+                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26, 0.3);
             }
+
             70% {
                 top: 5%;
-                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26,0.3);
+                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26, 0.3);
             }
+
             100% {
                 top: calc(0% - 60px);
-                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26,0);
+                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26, 0);
             }
         }
+
         .startNumHide {
             display: none;
         }
+
         .startNum {
             width: 100px;
             height: 40px;
-            background-color: rgba(63,205,22,0.7);
-            box-shadow: 1px 1px 40px 3px rgba(26, 26, 26,0);
+            background-color: rgba(63, 205, 22, 0.7);
+            box-shadow: 1px 1px 40px 3px rgba(26, 26, 26, 0);
             font-size: 14px;
             position: fixed;
             bottom: calc(0% - 50px);
@@ -146,31 +158,36 @@
             backdrop-filter: blur(2px);
             animation-name: UpThenDown;
             animation-duration: 4s;
-            
+
         }
-        @keyframes UpThenDown{
+
+        @keyframes UpThenDown {
             0% {
                 bottom: calc(0% - 50px);
-                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26,0.0);
+                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26, 0.0);
             }
+
             20% {
                 bottom: 5%;
-                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26,0.3);
+                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26, 0.3);
             }
+
             80% {
                 bottom: 5%;
-                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26,0.3);
+                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26, 0.3);
             }
+
             100% {
                 bottom: calc(0% - 50px);
-                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26,0);
+                box-shadow: 1px 1px 40px 3px rgba(26, 26, 26, 0);
             }
         }
+
         #tip {
             display: block;
             height: 40px;
             width: 100px;
-            background-color: rgba(63,205,22);
+            background-color: rgba(63, 205, 22);
             border-radius: 10px;
             color: white;
             text-align: center;
@@ -195,7 +212,7 @@
         <button class="note" index="2">3</button>
         <button class="note" index="3">4</button>
     </div>
-    
+
     <div class="teachingHide">请按照音乐节奏点击下列按钮或使用键盘</div>
     <div class="startNumHide">
         还剩 3 秒
@@ -209,7 +226,7 @@
         var end = document.querySelector("#end");
         var tip = document.querySelector("#tip");
         var out = document.querySelector("#out");
-        
+
 
 
 
@@ -238,6 +255,7 @@
 
         // 记录音符的次数
         var time = [0, 0, 0, 0];
+        var clickTime = 0;
 
         // 音符数据
         var note = {
@@ -261,20 +279,20 @@
         // 按钮点击事件
         start.onclick = function () {
             document.querySelector(".teachingHide").className = "teaching";
-            setTimeout(function() {
+            setTimeout(function () {
                 document.querySelector(".teaching").className = "teachingHide";
-            },5000);
+            }, 5000);
             document.querySelector(".startNumHide").className = "startNum";
-            setTimeout(function() {
+            setTimeout(function () {
                 document.querySelector(".startNum").className = "startNumHide";
-            },5000);
+            }, 5000);
             var start = 3;
             var startNum = document.querySelector(".startNum");
             startNum.innerHTML = "还剩" + start + "秒";
-            var time = setInterval(function () {
+            var setTime = setInterval(function () {
                 start--;
                 if (start > 0) {
-                    
+
                     startNum.innerHTML = "还剩" + start + "秒";
                 } else {
                     startNum.innerHTML = "开始";
@@ -300,6 +318,7 @@
 
                     // 将记录音符的次数加1
                     time[parseFloat(this.getAttribute("index"))]++;
+                    clickTime++;
 
                 }
             }
@@ -321,6 +340,7 @@
                         noteButton[0].className = "noteOn";
                         tip.innerHTML = "你按下了 D";
                         tip.className = "red";
+                        clickTime++;
                         break;
                     case 70:
                         var nowTime = new Date().getTime();
@@ -332,6 +352,7 @@
                         noteButton[1].className = "noteOn";
                         tip.innerHTML = "你按下了 F";
                         tip.className = "blue";
+                        clickTime++;
                         break;
                     case 74:
                         var nowTime = new Date().getTime();
@@ -343,6 +364,7 @@
                         noteButton[2].className = "noteOn";
                         tip.innerHTML = "你按下了 J";
                         tip.className = "green";
+                        clickTime++;
                         break;
                     case 75:
                         var nowTime = new Date().getTime();
@@ -354,6 +376,7 @@
                         noteButton[3].className = "noteOn";
                         tip.innerHTML = "你按下了 K";
                         tip.className = "yellow";
+                        clickTime++;
                         break;
                 }
             }
@@ -366,28 +389,27 @@
             // 将对应按键按下的数据存放到对应的位置中
             switch (code) {
                 case 68:
-                    
+
                     noteButton[0].className = "note";
-                    
+
                     break;
                 case 70:
-                    
+
                     noteButton[1].className = "note";
-                    
+
                     break;
                 case 74:
-                    
+
                     noteButton[2].className = "note";
-                    
+
                     break;
                 case 75:
-                    
+
                     noteButton[3].className = "note";
-                    
+
                     break;
             }
         }
-        
 
 
         // 设置结束按钮
@@ -422,7 +444,13 @@
                 start: "end"
             }
 
-            alert("请保存谱面，如果不满意，请刷新网页重新开始");
+            note["name"] = prompt("输入歌曲名称");
+            note.number = clickTime;
+        }
+
+        out.onclick = function () {
+            var name = prompt("输入导出文件名") + ".json";
+            saveJSON(note, name);
             note = {
                 0: {
 
@@ -437,13 +465,6 @@
 
                 }
             }
-
-        }
-
-        out.onclick = function () {
-            var name = prompt("输入导出文件名") + ".json";
-            saveJSON(note, name);
-
         }
 
     </script>

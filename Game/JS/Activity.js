@@ -5,6 +5,7 @@ switch (day) {
     case "4-23":
         console.log("HelloWorld!");
         document.getElementById("theme").setAttribute("href","ActivityTheme/CaiXin_Brithday.css");
+        break;
     case "6-18":
         document.getElementById("theme").setAttribute("href","ActivityTheme/SaltFish_Brithday.css");
         break;

@@ -11,10 +11,29 @@
     <script src="JSON/song1.json"></script>
     <script src="JSON/song2.json"></script>
     <script src="JSON/song3.json"></script>
+    <script src="JSON/song4.json"></script>
+    <!-- 分割线 -->
+    <script src="JS/LoadJSON.js"></script>
+    <script>
+        if (localStorage.getItem("FirstLoad") == null) {
+            Load();
+            localStorage.setItem("FirstLoad","true");
+            
+        }
+    </script>
     <style>
         *::-webkit-scrollbar {
             width: 5px;
             
+        }
+        .clearFloat::after {
+            clear: both;
+        }
+        li {
+            list-style: none;
+        }
+        ol {
+            padding: 0;
         }
         *::-webkit-scrollbar-track {
             background-color: rgb(229, 229, 229);
@@ -28,7 +47,6 @@
             user-select: none;
             cursor: default;
             outline: none;
-            touch-action: none;
         }
         
         /* 设置按钮的动画 */
@@ -40,7 +58,7 @@
         /* 声明字体 */
         @font-face {
             font-family: "iconfont"; /* Project id  */
-            src: url('font_tylzha82vep/iconfont.ttf') format('truetype');
+            src: url('Fluent-Icons/font_tylzha82vep/iconfont.ttf') format('truetype');
         }
 
         @font-face {
@@ -79,6 +97,7 @@
             width: 80%;
             margin: 0 auto;
             overflow: hidden;
+            touch-action: none;
         }
 
         /* 设置音符样式 */
@@ -124,6 +143,7 @@
             animation-duration: 1s,0.2s;
             animation-timing-function: linear;
             animation-delay: 0s,1s;
+            z-index: -1;
         }
         
         /* 将颜色填充上 */
@@ -272,33 +292,44 @@
             
         }
 
+        /* 通用窗口颜色和阴影 */
+        .window {
+            transition: all 0.5s ease;
+            border-radius: 25px;
+            position: fixed;
+            background-color: rgba(242, 242, 242);
+            /* backdrop-filter: blur(20px); */
+            height: 500px;
+            width: 800px;
+            overflow: auto;
+            left: 50%;
+            transform:translate();
+        }
+        .close {
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+            transform:translate(0,100%);
+            bottom: 0;
+        }
+        .show,
+        .firstShow {
+            bottom: calc(50% - 250px);
+            box-shadow: 0px 0px 67px -34px grey;
+        }
+
+        
         /* 设置一个类名可以隐藏 */
         .none {
             display: none;
         }
 
-        /* 选歌窗口实现 */
-        /* 拥有关闭和显示两种状态 */
-        .close {
-            bottom: calc(0% - 500px);
-        }
-
-        .show {
-            box-shadow: 0px 0px 67px -34px grey;
-            bottom: calc(50% - 250px);
-        }
+        
 
         .show,
         .close {
-            transition: all 0.5s ease;
-            border-radius: 25px;
-            position: fixed;
-            left: calc(50% - 400px);
-            background-color: rgb(242, 242, 242);
             
-            height: 500px;
-            width: 800px;
-            overflow: auto;
+            left: calc(50% - 400px);
+            
+            
         }
         /* 设置关闭按钮样式 */
         .closeBtn {
@@ -386,33 +417,27 @@
             border-radius: 25px;
             position: fixed;
             left: calc(50% - 400px);
-            background-color: rgb(242, 242, 242);
             bottom: calc(50% - 250px);
             height: 500px;
             width: 800px;
             overflow: auto;
             animation: showFirst 0.5s;
-            box-shadow: 0px 0px 67px -34px grey;
         }
 
 
-        .fileBoxShow,
-        .fileBoxClose {
+        #fileIn {
             position: fixed;
             height: 300px;
             width: 400px;
             border-radius: 25px;
-            background-color: rgb(242, 242, 242);
             left: calc(50% - 200px);
-            transition: all 0.5s ease;
         }
-        .fileBoxShow {
+        /* .fileBoxShow {
             bottom: calc(50% - 150px);
-            box-shadow: 0px 0px 67px -34px grey;
         }
         .fileBoxClose {
             bottom: calc(0% - 300px);
-        }
+        } */
 
         #fileIn .option {
             border-radius: 10px;
@@ -446,23 +471,16 @@
         }
 
         #thanks {
-            transition: all 0.5s ease;
-            border-radius: 25px;
-            position: fixed;
-            left: calc(50% - 400px);
-            background-color: rgb(242, 242, 242);
+            
             text-align: center;
-            height: 500px;
-            width: 800px;
-            overflow: auto;
+            
         }
-        .thanksClose {
+        /* .thanksClose {
             bottom: calc(0% - 500px);
         }
         .thanksOpen {
-            box-shadow: 0px 0px 67px -34px grey;
             bottom: calc(50% - 250px);
-        }
+        } */
 
         #thanks p{
             font-family: 'Microsoft YaHei';
@@ -470,30 +488,16 @@
             user-select: text;
         }
 
-        /* 设置窗口 */
-        #settingBox {
-            transition: all 0.5s ease;
-            border-radius: 25px;
-            position: fixed;
-            left: calc(50% - 400px);
-            background-color: rgb(242, 242, 242);
-            height: 500px;
-            width: 800px;
-            overflow: auto;
-        }
-        .settingClose {
-            bottom: calc(0% - 500px);
-        }
-        .settingShow {
-            box-shadow: 0px 0px 67px -34px grey;
-            bottom: calc(50% - 250px);
-        }
-        /* 设置主要区域 */
+        
         .main {
             margin-top: 75px;
             width: 800px;
             height: 425px;
             overflow-x: auto;
+            line-height: 30px;
+            font-family: "Microsoft YaHei";
+            font-size: 20px;
+            
         }
         /* 标题 */
         #settingBox h1 {
@@ -505,18 +509,59 @@
             transition: all 0.2s ease;
             user-select: none;
         }
+
+        /* 按钮样式 */
+        .toggleSwitchOff,
+        .toggleSwitchOn {
+            height: 30px;
+            width: 60px;
+            border-radius: 15px;
+            background-color: #F9F9F9;
+            border: 2px solid #F9F9F9;
+            box-sizing: border-box;
+        }
+        .toggleSwitchOff::before,
+        .toggleSwitchOn::before {
+            content: "";
+            display: block;
+            height: 20px;
+            width: 20px;
+            margin: 3px;
+            border-radius: 10px;
+            transition: all 0.2s;
+            float: left;
+        }
+        .toggleSwitchOff::before {
+            background-color: #7F7F7F;
+            transition: all 0.2s ease;
+        }
+        .toggleSwitchOn::before {
+            background-color: #3EAAFF;
+            margin-left: 33px;
+            transition: all 0.2s ease;
+        }
+        #settingBox .main .opt {
+            width: 700px;
+            margin: 10px 50px;
+        }
+
+
+        
     </style>
+    <link rel="stylesheet" href="Settle/settle.css">
     <link rel="stylesheet" id="theme" type="text/css">
     <link rel="stylesheet" href="" id="touchCSS" type="text/css">
+    <link rel="stylesheet" href="" id="BlurCSS" type="text/css">
+    <link rel="stylesheet" href="" id="songTheme">
 </head>
 <body>
     <audio></audio>
     <!-- 三个按钮 -->
     <input class="none" type="file" id="file">
-    <button id="noteIn">&#xea45</button>
+    <button id="noteIn" onclick="show('fileIn')">&#xea45</button>
     <button id="startBtn">&#xe655</button>
-    <button id="musicChoose">&#xeb90</button>
-    <button id="setting" onclick="openSetting()">&#xe713</button>
+    <button id="musicChoose" onclick="show('showMusic')">&#xeb90</button>
+    <button id="setting" onclick="show('settingBox')">&#xe713</button>
     <!-- 连击显示 -->
     <div id="comboNum">
         <span class="num"></span><br>
@@ -542,11 +587,30 @@
         </div>
         
     </div>
-    <div id="thanks" class="thanksClose">
-        <button class="closeBtn" onclick="closeThanks()">&#xe711</button>
+    <div class="none" id="settle">
+        <span class="gradeText">您的得分是:</span>
+        <span class="grade">A</span>
+        <div class="comboPart">
+            <span class="comboText">Combo</span>
+            <br>
+            <span class="combo">100</span>
+        </div>
+        <div class="scorePart">
+            <span class="scoreText">Score</span>
+            <br>
+            <span class="score">10000</span>
+        </div>
+        <div class="hitRate">
+            <span>Hit Rate</span>
+            <span class="num">95.9%</span>
+        </div>
+        <div class="words">干的漂亮！</div>
+        <button class="ok">OK</button>
+    </div>
+    <div id="thanks" class="close window">
+        <button class="closeBtn" onclick="closeBtn()">&#xe711</button>
         <div style="overflow: auto; height: 500px; width: 800px;">
             <h1>制作名单：</h1>
-            <br>
             <br>
             <br>
             <p>谱面制作：当一条咸鱼www</p>
@@ -558,14 +622,19 @@
             <br>
             <p>鸣谢：</p>
             <p>快乐jv君（宣传）</p>
+            <br>
+            <br>
+            <h1>游戏版本</h1>
+            <p>1.0.2</p>
+            <br>
         </div>
         
     </div>
     <!-- 选择曲目和导入曲目功能 -->
-    <div class="firstShow" id="showMusic">
+    <div class="firstShow window" id="showMusic">
         <h1>选择曲目</h1>
         <!-- 关闭按钮 -->
-        <button class="closeBtn" onclick="closeBoxMusic()">&#xe711</button>
+        <button class="closeBtn">&#xe711</button>
         <div class="songBox">
             <div class="song" id="song1">
                 <img src="SongPictures/song1.png" alt="" class="songPic">
@@ -576,15 +645,19 @@
                 <span>Boring</span>
             </div>
             <div class="song" id="song3">
-                <img src="SongPictures/default.png" alt="" class="songPic">
+                <img src="SongPictures/song3.png" alt="" class="songPic">
                 <span>Dilemma</span>
+            </div>
+            <div class="song" id="song4">
+                <img src="SongPictures/default.png" alt="" class="songPic">
+                <span>Revolt</span>
             </div>
         </div>
         
     </div>
     
-    <div class="fileBoxClose" id="fileIn">
-        <button class="closeBtn" onclick="closeBoxFile()">&#xe711</button>
+    <div class="close window" id="fileIn">
+        <button class="closeBtn">&#xe711</button>
         <div class="option" id="noteFileIn" onclick="NoteFileIn()">
             <span class="icon">&#xe8a5</span>
             <span class="words">导入谱面</span>
@@ -594,10 +667,20 @@
             <span class="words">导入音乐</span>
         </div>
     </div>
-    <div class="settingClose" id="settingBox">
-        <button class="closeBtn" onclick="closeSettingBox()">&#xe711</button>
-        <h1>设置</h1>
-        <div class="main"></div>
+    <div class="close window" id="settingBox">
+        <button class="closeBtn">&#xe711</button>
+        <h1 onclick="clearData()">设置</h1>
+        <div class="main">
+            <ol id="TouchMode" class="opt">
+                <li style="float: left;">触屏模式（刷新后生效）</li>
+                <li style="float: right;" class="toggle"><div class="toggleSwitchOff" onclick="toggleSwitchONandOFF('TouchMode')"></div></li>
+            </ol>
+            <br><br>
+            <ol id="BlurMode" class="opt">
+                <li style="float: left;">毛玻璃效果（刷新后生效）</li>
+                <li style="float: right;" class="toggle"><div class="toggleSwitchOff" onclick="toggleSwitchONandOFF('BlurMode')"></div></li>
+            </ol>
+        </div>
     </div>
     <script>
         // 获取元素
@@ -687,17 +770,27 @@
             isStart = true;
         }
 
-        
-        // 选择曲目
-        musicChoose.onclick = function() {
-            document.querySelector("#showMusic").className = "show";
+        var score = 0;
+        function calculator() {
+            if (combo >= 50) {
+                score += 200;
+            } else {
+                score += 100;
+            }
         }
+        
+        // 统一式开启按钮
+        function show(element) {
+            document.querySelector("#" + element).classList.remove("close");
+            document.querySelector("#" + element).classList.add("show");
+        }
+
 
 
         // 导入文件
-        noteIn.onclick = function() {
-            document.querySelector("#fileIn").className = "fileBoxShow";
-        }
+        // noteIn.onclick = function() {
+        //     document.querySelector("#fileIn").className = "fileBoxShow";
+        // }
 
         // 导入音乐
         function MusicFileIn() {
@@ -707,24 +800,19 @@
             filesInput.click();
         }
 
-        // 设置
-        function openSetting() {
-            document.querySelector("#settingBox").className = "settingShow";
-        }
+        
 
-        // 关闭选择曲目的窗口
-        function closeBoxMusic() {
-            document.querySelector("#showMusic").className = "close";
+        // 统一式关闭按钮
+        var closeBtn = document.querySelectorAll(".closeBtn");
+        for (let i = 0; i < closeBtn.length; i++) {
+            closeBtn[i].onclick = function() {
+                this.parentNode.classList.remove("firstShow");
+                this.parentNode.classList.remove("show");
+                this.parentNode.classList.add("close");
+            }
         }
-        // 关闭导入文件窗口
-        function closeBoxFile() {
-            document.querySelector("#fileIn").className = "fileBoxClose"
-        }
-        // 关闭设置窗口
-        function closeSettingBox() {
-            document.querySelector("#settingBox").className = "settingClose";
-        }
-
+        
+        var ComboList = [];
 
         // 轨道
 
@@ -751,6 +839,7 @@
                     // 如果按下时的时间减去音符生成的时间小于 1300 而且 大于 700 ，那就算为 命中
                     if (nowTime[0] - bornTime <= 1300 && nowTime[0] - bornTime >= 700) {
                         console.log("命中");
+                        calculator();
                         // 连击数增加
                         combo++;
                         // 更新界面上的连击数字
@@ -761,15 +850,17 @@
                         setTimeout(function() {
                             if(nowTime[0] - bornTime <= 1300 && nowTime[0] - bornTime >= 700) {
                                 console.log("命中");
+                                calculator();
                                 // 连击数增加
                                 combo++;
                                 // 更新界面上的连击数字
                                 comboNum.innerHTML = combo + "";
-                                comboWords.innerHTML = "combo"
+                                comboWords.innerHTML = "combo";
                             } else {
                                 setTimeout (function() {
                                     if(nowTime[0] - bornTime <= 1300 && nowTime[0] - bornTime >= 700) {
                                         console.log("命中");
+                                        calculator();
                                         // 连击数增加
                                         combo++;
                                         // 更新界面上的连击数字
@@ -777,6 +868,7 @@
                                         comboWords.innerHTML = "combo"
                                     } else {
                                         // 判定为 miss ，combo清0
+                                        ComboList[ComboList.length] = combo;
                                         console.log("miss");
                                         combo = 0;
                                         comboNum.innerHTML = "";
@@ -807,6 +899,7 @@
                     
                     if (nowTime[1] - bornTime <= 1300 && nowTime[1] - bornTime >= 700) {
                         console.log("命中");
+                        calculator();
                         combo++;
                         comboNum.innerHTML = combo + "";
                         comboWords.innerHTML = "combo"
@@ -814,6 +907,7 @@
                         setTimeout(function() {
                             if(nowTime[1] - bornTime <= 1300 && nowTime[1] - bornTime >= 700) {
                                 console.log("命中");
+                                calculator();
                                 // 连击数增加
                                 combo++;
                                 // 更新界面上的连击数字
@@ -823,6 +917,7 @@
                                 setTimeout (function() {
                                     if(nowTime[1] - bornTime <= 1300 && nowTime[1] - bornTime >= 700) {
                                         console.log("命中");
+                                        calculator();
                                         // 连击数增加
                                         combo++;
                                         // 更新界面上的连击数字
@@ -830,6 +925,7 @@
                                         comboWords.innerHTML = "combo"
                                     } else {
                                         // 判定为 miss ，combo清0
+                                        ComboList[ComboList.length] = combo;
                                         console.log("miss");
                                         combo = 0;
                                         comboNum.innerHTML = "";
@@ -839,7 +935,6 @@
                             }
                         },100)
                     }
-                
                 },1000)
             }
         }
@@ -860,22 +955,25 @@
                     
                     if (nowTime[2] - bornTime <= 1300 && nowTime[2] - bornTime >= 700) {
                         console.log("命中");
+                        calculator();
                         combo++;
                         comboNum.innerHTML = combo + "";
-                        comboWords.innerHTML = "combo"
+                        comboWords.innerHTML = "combo";
                     } else {
                         setTimeout(function() {
                             if(nowTime[2] - bornTime <= 1300 && nowTime[2] - bornTime >= 700) {
                                 console.log("命中");
+                                calculator();
                                 // 连击数增加
                                 combo++;
                                 // 更新界面上的连击数字
                                 comboNum.innerHTML = combo + "";
-                                comboWords.innerHTML = "combo"
+                                comboWords.innerHTML = "combo";
                             } else {
                                 setTimeout (function() {
                                     if(nowTime[2] - bornTime <= 1300 && nowTime[2] - bornTime >= 700) {
                                         console.log("命中");
+                                        calculator();
                                         // 连击数增加
                                         combo++;
                                         // 更新界面上的连击数字
@@ -883,10 +981,12 @@
                                         comboWords.innerHTML = "combo"
                                     } else {
                                         // 判定为 miss ，combo清0
+                                        ComboList[ComboList.length] = combo;
                                         console.log("miss");
                                         combo = 0;
                                         comboNum.innerHTML = "";
                                         comboWords.innerHTML = "";
+                                        
                                     }
                                 },200)
                             }
@@ -913,6 +1013,7 @@
                     
                     if (nowTime[3] - bornTime <= 1300 && nowTime[3] - bornTime >= 700) {
                         console.log("命中");
+                        calculator();
                         combo++;
                         comboNum.innerHTML = combo + "";
                         comboWords.innerHTML = "combo";
@@ -920,6 +1021,7 @@
                         setTimeout(function() {
                             if(nowTime[3] - bornTime <= 1300 && nowTime[3] - bornTime >= 700) {
                                 console.log("命中");
+                                calculator();
                                 // 连击数增加
                                 combo++;
                                 // 更新界面上的连击数字
@@ -930,6 +1032,7 @@
                                 setTimeout (function() {
                                     if(nowTime[3] - bornTime <= 1300 && nowTime[3] - bornTime >= 700) {
                                         console.log("命中");
+                                        calculator();
                                         // 连击数增加
                                         combo++;
                                         // 更新界面上的连击数字
@@ -937,16 +1040,17 @@
                                         comboWords.innerHTML = "combo"
                                     } else {
                                         // 判定为 miss ，combo清0
+                                        ComboList[ComboList.length] = combo;
                                         console.log("miss");
                                         combo = 0;
                                         comboNum.innerHTML = "";
                                         comboWords.innerHTML = "";
+                                        
                                     }
                                 },200)
                             }
                         },100)
                     }
-                    
                 },1000);
             }
         }
@@ -955,10 +1059,16 @@
             var now = new Date().getTime();
             var timeToStart = now - startTime;
             if (noteData.musicLong <= timeToStart) {
+                ComboList[ComboList.length] = combo;
                 startBtn.click();
                 combo = 0;
                 time = [0,0,0,0];
                 nowTime = [0,0,0,0];
+                settle(ComboList,score);
+                ComboList = [];
+                score = 0;
+                startTime = 0;
+                musicPlay.load();
             }
             
         }
@@ -1029,6 +1139,17 @@
         }
 
 
+        // 按钮事件
+        function toggleSwitchONandOFF(event) {
+            var toggle = document.getElementById("settingBox").querySelector("#" + event).querySelector(".toggle").querySelector("div");
+            if (toggle.className == "toggleSwitchOff") {
+                toggle.className = "toggleSwitchOn";
+                localStorage.setItem(event,"true");
+            } else {
+                toggle.className = "toggleSwitchOff";
+                localStorage.setItem(event,"false");
+            }
+        }
         
         
     </script>
@@ -1036,5 +1157,8 @@
     <script src="JS/ChooseMusic.js"></script>
     <script src="JS/Activity.js"></script>
     <script src="JS/Touch.js"></script>
+    <script src="JS/ToggleSwitchSave.js"></script>
+    <script src="settle/settle.js"></script>
+    
 </body>
 </html>

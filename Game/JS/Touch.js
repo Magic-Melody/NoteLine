@@ -1,9 +1,8 @@
-var isTouchMode = false;
 TouchMode()
 
 var cssTouchTheme = document.querySelector("#touchCSS");
 function TouchMode() {
-    if (isTouchMode) {
+    if (localStorage.getItem("TouchMode") == "true") {
         document.getElementById("touchCSS").setAttribute("href","MoreTheme/Touch.css");
     }
 }

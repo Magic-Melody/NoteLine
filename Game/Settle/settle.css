@@ -1,0 +1,125 @@
+.windowSP {
+    height: 500px;
+    width: 800px;
+    background-color: rgba(242, 242, 242, 0.4);
+    backdrop-filter: blur(20px);
+    position: fixed;
+    top: calc(50% - 250px);
+    left: calc(50% - 400px);
+    border-radius: 25px;
+    transition: all 0.5s;
+    animation-name: windowDown;
+    box-shadow: 0px 0px 67px -34px grey;
+    animation-duration: 1s;
+    z-index: 1;
+}
+
+
+
+.windowSP .gradeText {
+    position: absolute;
+    font-weight: bold;
+    font-size: 25px;
+    left: 50px;
+    top: 60px;
+}
+.windowSP .grade {
+    position: absolute;
+    top: 100px;
+    left: 150px;
+    font-size: 100px;
+    animation: TextDown 3s;
+}
+.windowSP .comboPart {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    font-weight: bold;
+    font-size: 25px;
+    left: 50px;
+    top: 300px;
+    font-size: 20px;
+    text-align: center;
+    line-height: 30px;
+}
+.windowSP .scorePart {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    font-weight: bold;
+    font-size: 25px;
+    left: 150px;
+    top: 300px;
+    font-size: 20px;
+    text-align: center;
+    line-height: 30px;
+}
+.windowSP .hitRate {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    font-weight: bold;
+    font-size: 25px;
+    left: 250px;
+    top: 300px;
+    font-size: 20px;
+    text-align: center;
+    line-height: 30px;
+}
+.windowSP .words {
+    width: 500px;
+    height: 100px;
+    position: absolute;
+    font-weight: bold;
+    font-size: 25px;
+    left: 250px;
+    top: 180px;
+    font-size: 20px;
+    text-align: left;
+    line-height: 30px;
+}
+
+.windowSP .ok {
+    border: none;
+    border-radius: 10px;
+    background-color: #00C4FF;
+    opacity: 0.8;
+    color: white;
+    height: 40px;
+    width: 80px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font: 36px;
+    transition: all 0.2s;
+}
+.windowSP .ok:hover {
+    opacity: 1;
+}
+
+
+@keyframes TextDown {
+    0% {
+        opacity: 0;
+        transform: scale(2,2);
+    }
+    40% {
+        opacity: 0;
+        transform: scale(2,2);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1,1);
+    }
+}
+
+@keyframes windowDown {
+    from {
+        top: calc(0% - 500px);
+        box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+    }
+    to {
+        top: calc(50% - 250px);
+        box-shadow: 0px 0px 67px -34px grey;
+    }
+}
