@@ -16,9 +16,7 @@
     <script src="JS/LoadJSON.js"></script>
     <script>
         if (localStorage.getItem("FirstLoad") == null) {
-            Load();
             localStorage.setItem("FirstLoad","true");
-            
         }
     </script>
     <style>
@@ -253,7 +251,6 @@
         }
         #setting:active {
             transform: rotate(180deg) scale(0.7,0.7);
-            
         }
 
         
@@ -1158,7 +1155,7 @@
     <script src="JS/Activity.js"></script>
     <script src="JS/Touch.js"></script>
     <script src="JS/ToggleSwitchSave.js"></script>
-    <script src="settle/settle.js"></script>
+    <script src="Settle/settle.js"></script>
     
 </body>
 </html>

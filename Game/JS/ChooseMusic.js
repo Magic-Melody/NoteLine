@@ -59,4 +59,13 @@ function closeTheMusicWindow() {
     document.querySelector("#showMusic").querySelector(".closeBtn").click()
     musicPlay.load();
     startBtn.click();
+    ComboList[ComboList.length] = combo;
+    if (musicPlay.src != "") {
+        combo = 0;
+        time = [0,0,0,0];
+        nowTime = [0,0,0,0];
+        ComboList = [];
+        score = 0;
+        musicPlay.load();
+    }
 }
