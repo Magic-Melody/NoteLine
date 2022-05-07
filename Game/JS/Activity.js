@@ -15,4 +15,7 @@ switch (day) {
     case "9-3":
         console.log("平淡的一天，却是 快乐jv君 的生日!");
         break;
+    case "5-8":
+        document.querySelector("#thanks").querySelector("div").innerHTML = "<h1><br>向那个曾经照顾你的她<br>表示感谢<h1>";
+        break;
 }

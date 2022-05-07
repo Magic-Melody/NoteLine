@@ -39,9 +39,10 @@ function settle(data,num) {
         document.querySelector("#settle").style.opacity = "0";
         document.querySelector("#settle").style.transform = "scale(0.5,0.5)";
         document.querySelector("#settle").style.boxShadow = "0px 0px 0px 0px rgba(0, 0, 0, 0)";
+        document.querySelector("#musicChoose").click();
         setTimeout(function() {
             document.querySelector("#settle").className = "none";
             document.querySelector("#settle").setAttribute("style","");
-        },1000)
+        },1000);
     });
 }
