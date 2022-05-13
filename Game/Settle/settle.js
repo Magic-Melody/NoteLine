@@ -1,3 +1,8 @@
+var wordsList = {
+    S: ["看来你很擅长嘛", "考虑过加入我们的开发行列吗（滑稽）", "有时候文字也是可以点的", "在特殊的日子可能会有特殊的事情", "打的太好了！！", "你已经比我打的厉害了"],
+    A: ["也许你离 S 也不远了", "你知道这个游戏有个隐藏的窗口吗？"],
+}
+
 function settle(data,num) {
     document.querySelector("#settle").className = "windowSP";
     var window = document.querySelector(".windowSP");

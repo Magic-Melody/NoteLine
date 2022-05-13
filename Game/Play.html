@@ -620,6 +620,7 @@
             <br>
             <p>鸣谢：</p>
             <p>快乐jv君（宣传）</p>
+            <p>凌小岚</p>
             <br>
             <br>
             <h1>游戏版本</h1>
@@ -711,13 +712,13 @@
         // 最后一次按下判定点的时间戳，分为四个区域
         var nowTime = [0,0,0,0];
         // 音符生成的数量
-        var time = [0,0,0,0];
+        var noteNum = [0,0,0,0];
         
         // 设置生成音符的回调函数
-        var w1;
-        var w2;
-        var w3;
-        var w4;
+        var tr1;
+        var tr2;
+        var tr3;
+        var tr4;
         var wm;
         // 加载音效
         var audio1 = new Audio("audio/audio1.mp3");
@@ -737,10 +738,10 @@
             if (isStart) {
                 // 如果是开始状态，按下按钮后会暂停
                 // 清除所有生成音符的回调函数
-                clearInterval(w1);
-                clearInterval(w2);
-                clearInterval(w3);
-                clearInterval(w4);
+                clearInterval(tr1);
+                clearInterval(tr2);
+                clearInterval(tr3);
+                clearInterval(tr4);
                 clearTimeout(musicPlayOut);
                 // 暂停判断音乐是否结束
                 clearInterval(wm);
@@ -758,10 +759,10 @@
                 }
             },3000);
             // 每 10ms 判断一次是否需要生成音符
-            w1 = setInterval(way1,10);
-            w2 = setInterval(way2,10);
-            w3 = setInterval(way3,10);
-            w4 = setInterval(way4,10);
+            tr1 = setInterval(makeNote, 10, 1);
+            tr2 = setInterval(makeNote, 10, 2);
+            tr3 = setInterval(makeNote, 10, 3);
+            tr4 = setInterval(makeNote, 10, 4);
             // 判断音乐是否结束
             wm = setInterval(endMusic,1000);
             this.innerHTML = "&#xe65d";
@@ -814,28 +815,42 @@
 
         // 轨道
 
-        // 轨道1
-        function way1() {
+        // 统一式生成音符和判定
+        function makeNote(track) {
+            track--;
             var now = new Date().getTime();
             // 如果在谱面文件中读取到结束信号，就不再继续判断是否需要生成该轨道的音符
-            if (noteData[0][time[0]].start == "end") {
-                clearInterval(w1);
+            if (noteData[track][noteNum[track]].start == "end") {
+                switch (track + 1) {
+                    case 1:
+                        clearInterval(tr1);
+                        break;
+                    case 2:
+                        clearInterval(tr2);
+                        break;
+                    case 3:
+                        clearInterval(tr3);
+                        break;
+                    case 4:
+                        clearInterval(tr4);
+                        break;
+                }
                 return;
             }
-            if (noteData[0][time[0]].start - 1000 <= (now - startTime)) {
+            if (noteData[track][noteNum[track]].start - 1000 <= (now - startTime)) {
                 // 创建元素
                 var note = document.createElement("div");
                 note.className = "move";
                 var bornTime = new Date().getTime();
-                lines[0].appendChild(note);
+                lines[track].appendChild(note);
                 // 增加生成的音符数量
-                time[0]++;
+                noteNum[track]++;
                 // 判断
                 setTimeout(function() {
                     // 如果判定点从未按过，那也算为 miss （这串代码已经没用了，但是懒得删
                     // 现在已经删掉了
                     // 如果按下时的时间减去音符生成的时间小于 1300 而且 大于 700 ，那就算为 命中
-                    if (nowTime[0] - bornTime <= 1300 && nowTime[0] - bornTime >= 700) {
+                    if (nowTime[track] - bornTime <= 1300 && nowTime[track] - bornTime >= 700) {
                         console.log("命中");
                         calculator();
                         // 连击数增加
@@ -846,7 +861,7 @@
                     } else {
                         // 如果没有命中，那就等300ms在判定一次
                         setTimeout(function() {
-                            if(nowTime[0] - bornTime <= 1300 && nowTime[0] - bornTime >= 700) {
+                            if(nowTime[track] - bornTime <= 1300 && nowTime[track] - bornTime >= 700) {
                                 console.log("命中");
                                 calculator();
                                 // 连击数增加
@@ -856,7 +871,7 @@
                                 comboWords.innerHTML = "combo";
                             } else {
                                 setTimeout (function() {
-                                    if(nowTime[0] - bornTime <= 1300 && nowTime[0] - bornTime >= 700) {
+                                    if(nowTime[track] - bornTime <= 1300 && nowTime[track] - bornTime >= 700) {
                                         console.log("命中");
                                         calculator();
                                         // 连击数增加
@@ -880,178 +895,244 @@
                 
             }
         }
-        // 轨道2
-        function way2() {
-            var now = new Date().getTime();
-            if (noteData[1][time[1]].start == "end") {
-                clearInterval(w2);
-                return;
-            }
-            if (noteData[1][time[1]].start - 1000 <= (now - startTime)) {
-                var note = document.createElement("div");
-                note.className = "move";
-                var bornTime = new Date().getTime();
-                lines[1].appendChild(note);
-                time[1]++;
-                setTimeout(function() {
+        // // 轨道1
+        // function way1() {
+        //     var now = new Date().getTime();
+        //     // 如果在谱面文件中读取到结束信号，就不再继续判断是否需要生成该轨道的音符
+        //     if (noteData[0][noteNum[0]].start == "end") {
+        //         clearInterval(tr1);
+        //         return;
+        //     }
+        //     if (noteData[0][noteNum[0]].start - 1000 <= (now - startTime)) {
+        //         // 创建元素
+        //         var note = document.createElement("div");
+        //         note.className = "move";
+        //         var bornTime = new Date().getTime();
+        //         lines[0].appendChild(note);
+        //         // 增加生成的音符数量
+        //         noteNum[0]++;
+        //         // 判断
+        //         setTimeout(function() {
+        //             // 如果判定点从未按过，那也算为 miss （这串代码已经没用了，但是懒得删
+        //             // 现在已经删掉了
+        //             // 如果按下时的时间减去音符生成的时间小于 1300 而且 大于 700 ，那就算为 命中
+        //             if (nowTime[0] - bornTime <= 1300 && nowTime[0] - bornTime >= 700) {
+        //                 console.log("命中");
+        //                 calculator();
+        //                 // 连击数增加
+        //                 combo++;
+        //                 // 更新界面上的连击数字
+        //                 comboNum.innerHTML = combo + "";
+        //                 comboWords.innerHTML = "combo"
+        //             } else {
+        //                 // 如果没有命中，那就等300ms在判定一次
+        //                 setTimeout(function() {
+        //                     if(nowTime[0] - bornTime <= 1300 && nowTime[0] - bornTime >= 700) {
+        //                         console.log("命中");
+        //                         calculator();
+        //                         // 连击数增加
+        //                         combo++;
+        //                         // 更新界面上的连击数字
+        //                         comboNum.innerHTML = combo + "";
+        //                         comboWords.innerHTML = "combo";
+        //                     } else {
+        //                         setTimeout (function() {
+        //                             if(nowTime[0] - bornTime <= 1300 && nowTime[0] - bornTime >= 700) {
+        //                                 console.log("命中");
+        //                                 calculator();
+        //                                 // 连击数增加
+        //                                 combo++;
+        //                                 // 更新界面上的连击数字
+        //                                 comboNum.innerHTML = combo + "";
+        //                                 comboWords.innerHTML = "combo"
+        //                             } else {
+        //                                 // 判定为 miss ，combo清0
+        //                                 ComboList[ComboList.length] = combo;
+        //                                 console.log("miss");
+        //                                 combo = 0;
+        //                                 comboNum.innerHTML = "";
+        //                                 comboWords.innerHTML = "";
+        //                             }
+        //                         },200)
+        //                     }
+        //                 },100)
+        //             }
+        //         },1000)
+                
+        //     }
+        // }
+        // // 轨道2
+        // function way2() {
+        //     var now = new Date().getTime();
+        //     if (noteData[1][noteNum[1]].start == "end") {
+        //         clearInterval(tr2);
+        //         return;
+        //     }
+        //     if (noteData[1][noteNum[1]].start - 1000 <= (now - startTime)) {
+        //         var note = document.createElement("div");
+        //         note.className = "move";
+        //         var bornTime = new Date().getTime();
+        //         lines[1].appendChild(note);
+        //         noteNum[1]++;
+        //         setTimeout(function() {
                     
-                    if (nowTime[1] - bornTime <= 1300 && nowTime[1] - bornTime >= 700) {
-                        console.log("命中");
-                        calculator();
-                        combo++;
-                        comboNum.innerHTML = combo + "";
-                        comboWords.innerHTML = "combo"
-                    } else {
-                        setTimeout(function() {
-                            if(nowTime[1] - bornTime <= 1300 && nowTime[1] - bornTime >= 700) {
-                                console.log("命中");
-                                calculator();
-                                // 连击数增加
-                                combo++;
-                                // 更新界面上的连击数字
-                                comboNum.innerHTML = combo + "";
-                                comboWords.innerHTML = "combo"
-                            } else {
-                                setTimeout (function() {
-                                    if(nowTime[1] - bornTime <= 1300 && nowTime[1] - bornTime >= 700) {
-                                        console.log("命中");
-                                        calculator();
-                                        // 连击数增加
-                                        combo++;
-                                        // 更新界面上的连击数字
-                                        comboNum.innerHTML = combo + "";
-                                        comboWords.innerHTML = "combo"
-                                    } else {
-                                        // 判定为 miss ，combo清0
-                                        ComboList[ComboList.length] = combo;
-                                        console.log("miss");
-                                        combo = 0;
-                                        comboNum.innerHTML = "";
-                                        comboWords.innerHTML = "";
-                                    }
-                                },200)
-                            }
-                        },100)
-                    }
-                },1000)
-            }
-        }
-        // 轨道3
-        function way3() {
-            var now = new Date().getTime();
-            if (noteData[2][time[2]].start == "end") {
-                clearInterval(w3);
-                return;
-            }
-            if (noteData[2][time[2]].start - 1000 <= (now - startTime)) {
-                var note = document.createElement("div");
-                note.className = "move";
-                var bornTime = new Date().getTime();
-                lines[2].appendChild(note);
-                time[2]++;
-                setTimeout(function() {
+        //             if (nowTime[1] - bornTime <= 1300 && nowTime[1] - bornTime >= 700) {
+        //                 console.log("命中");
+        //                 calculator();
+        //                 combo++;
+        //                 comboNum.innerHTML = combo + "";
+        //                 comboWords.innerHTML = "combo"
+        //             } else {
+        //                 setTimeout(function() {
+        //                     if(nowTime[1] - bornTime <= 1300 && nowTime[1] - bornTime >= 700) {
+        //                         console.log("命中");
+        //                         calculator();
+        //                         // 连击数增加
+        //                         combo++;
+        //                         // 更新界面上的连击数字
+        //                         comboNum.innerHTML = combo + "";
+        //                         comboWords.innerHTML = "combo"
+        //                     } else {
+        //                         setTimeout (function() {
+        //                             if(nowTime[1] - bornTime <= 1300 && nowTime[1] - bornTime >= 700) {
+        //                                 console.log("命中");
+        //                                 calculator();
+        //                                 // 连击数增加
+        //                                 combo++;
+        //                                 // 更新界面上的连击数字
+        //                                 comboNum.innerHTML = combo + "";
+        //                                 comboWords.innerHTML = "combo"
+        //                             } else {
+        //                                 // 判定为 miss ，combo清0
+        //                                 ComboList[ComboList.length] = combo;
+        //                                 console.log("miss");
+        //                                 combo = 0;
+        //                                 comboNum.innerHTML = "";
+        //                                 comboWords.innerHTML = "";
+        //                             }
+        //                         },200)
+        //                     }
+        //                 },100)
+        //             }
+        //         },1000)
+        //     }
+        // }
+        // // 轨道3
+        // function way3() {
+        //     var now = new Date().getTime();
+        //     if (noteData[2][noteNum[2]].start == "end") {
+        //         clearInterval(tr3);
+        //         return;
+        //     }
+        //     if (noteData[2][noteNum[2]].start - 1000 <= (now - startTime)) {
+        //         var note = document.createElement("div");
+        //         note.className = "move";
+        //         var bornTime = new Date().getTime();
+        //         lines[2].appendChild(note);
+        //         noteNum[2]++;
+        //         setTimeout(function() {
                     
-                    if (nowTime[2] - bornTime <= 1300 && nowTime[2] - bornTime >= 700) {
-                        console.log("命中");
-                        calculator();
-                        combo++;
-                        comboNum.innerHTML = combo + "";
-                        comboWords.innerHTML = "combo";
-                    } else {
-                        setTimeout(function() {
-                            if(nowTime[2] - bornTime <= 1300 && nowTime[2] - bornTime >= 700) {
-                                console.log("命中");
-                                calculator();
-                                // 连击数增加
-                                combo++;
-                                // 更新界面上的连击数字
-                                comboNum.innerHTML = combo + "";
-                                comboWords.innerHTML = "combo";
-                            } else {
-                                setTimeout (function() {
-                                    if(nowTime[2] - bornTime <= 1300 && nowTime[2] - bornTime >= 700) {
-                                        console.log("命中");
-                                        calculator();
-                                        // 连击数增加
-                                        combo++;
-                                        // 更新界面上的连击数字
-                                        comboNum.innerHTML = combo + "";
-                                        comboWords.innerHTML = "combo"
-                                    } else {
-                                        // 判定为 miss ，combo清0
-                                        ComboList[ComboList.length] = combo;
-                                        console.log("miss");
-                                        combo = 0;
-                                        comboNum.innerHTML = "";
-                                        comboWords.innerHTML = "";
+        //             if (nowTime[2] - bornTime <= 1300 && nowTime[2] - bornTime >= 700) {
+        //                 console.log("命中");
+        //                 calculator();
+        //                 combo++;
+        //                 comboNum.innerHTML = combo + "";
+        //                 comboWords.innerHTML = "combo";
+        //             } else {
+        //                 setTimeout(function() {
+        //                     if(nowTime[2] - bornTime <= 1300 && nowTime[2] - bornTime >= 700) {
+        //                         console.log("命中");
+        //                         calculator();
+        //                         // 连击数增加
+        //                         combo++;
+        //                         // 更新界面上的连击数字
+        //                         comboNum.innerHTML = combo + "";
+        //                         comboWords.innerHTML = "combo";
+        //                     } else {
+        //                         setTimeout (function() {
+        //                             if(nowTime[2] - bornTime <= 1300 && nowTime[2] - bornTime >= 700) {
+        //                                 console.log("命中");
+        //                                 calculator();
+        //                                 // 连击数增加
+        //                                 combo++;
+        //                                 // 更新界面上的连击数字
+        //                                 comboNum.innerHTML = combo + "";
+        //                                 comboWords.innerHTML = "combo"
+        //                             } else {
+        //                                 // 判定为 miss ，combo清0
+        //                                 ComboList[ComboList.length] = combo;
+        //                                 console.log("miss");
+        //                                 combo = 0;
+        //                                 comboNum.innerHTML = "";
+        //                                 comboWords.innerHTML = "";
                                         
-                                    }
-                                },200)
-                            }
-                        },100)
-                    }
+        //                             }
+        //                         },200)
+        //                     }
+        //                 },100)
+        //             }
                     
-                },1000);
-            }
-        }
-        // 轨道4
-        function way4() {
-            var now = new Date().getTime();
-            if (noteData[3][time[3]].start == "end") {
-                clearInterval(w4);
-                return;
-            }
-            if (noteData[3][time[3]].start - 1000 <= (now - startTime)) {
-                var note = document.createElement("div");
-                note.className = "move";
-                var bornTime = new Date().getTime();
-                lines[3].appendChild(note);
-                time[3]++;
-                setTimeout(function() {
+        //         },1000);
+        //     }
+        // }
+        // // 轨道4
+        // function way4() {
+        //     var now = new Date().getTime();
+        //     if (noteData[3][noteNum[3]].start == "end") {
+        //         clearInterval(tr4);
+        //         return;
+        //     }
+        //     if (noteData[3][noteNum[3]].start - 1000 <= (now - startTime)) {
+        //         var note = document.createElement("div");
+        //         note.className = "move";
+        //         var bornTime = new Date().getTime();
+        //         lines[3].appendChild(note);
+        //         noteNum[3]++;
+        //         setTimeout(function() {
                     
-                    if (nowTime[3] - bornTime <= 1300 && nowTime[3] - bornTime >= 700) {
-                        console.log("命中");
-                        calculator();
-                        combo++;
-                        comboNum.innerHTML = combo + "";
-                        comboWords.innerHTML = "combo";
-                    } else {
-                        setTimeout(function() {
-                            if(nowTime[3] - bornTime <= 1300 && nowTime[3] - bornTime >= 700) {
-                                console.log("命中");
-                                calculator();
-                                // 连击数增加
-                                combo++;
-                                // 更新界面上的连击数字
-                                comboNum.innerHTML = combo + "";
-                                comboWords.innerHTML = "combo"
-                            } else {
+        //             if (nowTime[3] - bornTime <= 1300 && nowTime[3] - bornTime >= 700) {
+        //                 console.log("命中");
+        //                 calculator();
+        //                 combo++;
+        //                 comboNum.innerHTML = combo + "";
+        //                 comboWords.innerHTML = "combo";
+        //             } else {
+        //                 setTimeout(function() {
+        //                     if(nowTime[3] - bornTime <= 1300 && nowTime[3] - bornTime >= 700) {
+        //                         console.log("命中");
+        //                         calculator();
+        //                         // 连击数增加
+        //                         combo++;
+        //                         // 更新界面上的连击数字
+        //                         comboNum.innerHTML = combo + "";
+        //                         comboWords.innerHTML = "combo"
+        //                     } else {
                                 
-                                setTimeout (function() {
-                                    if(nowTime[3] - bornTime <= 1300 && nowTime[3] - bornTime >= 700) {
-                                        console.log("命中");
-                                        calculator();
-                                        // 连击数增加
-                                        combo++;
-                                        // 更新界面上的连击数字
-                                        comboNum.innerHTML = combo + "";
-                                        comboWords.innerHTML = "combo"
-                                    } else {
-                                        // 判定为 miss ，combo清0
-                                        ComboList[ComboList.length] = combo;
-                                        console.log("miss");
-                                        combo = 0;
-                                        comboNum.innerHTML = "";
-                                        comboWords.innerHTML = "";
+        //                         setTimeout (function() {
+        //                             if(nowTime[3] - bornTime <= 1300 && nowTime[3] - bornTime >= 700) {
+        //                                 console.log("命中");
+        //                                 calculator();
+        //                                 // 连击数增加
+        //                                 combo++;
+        //                                 // 更新界面上的连击数字
+        //                                 comboNum.innerHTML = combo + "";
+        //                                 comboWords.innerHTML = "combo"
+        //                             } else {
+        //                                 // 判定为 miss ，combo清0
+        //                                 ComboList[ComboList.length] = combo;
+        //                                 console.log("miss");
+        //                                 combo = 0;
+        //                                 comboNum.innerHTML = "";
+        //                                 comboWords.innerHTML = "";
                                         
-                                    }
-                                },200)
-                            }
-                        },100)
-                    }
-                },1000);
-            }
-        }
+        //                             }
+        //                         },200)
+        //                     }
+        //                 },100)
+        //             }
+        //         },1000);
+        //     }
+        // }
         // 判断音乐是否结束
         function endMusic() {
             var now = new Date().getTime();
@@ -1060,7 +1141,7 @@
                 ComboList[ComboList.length] = combo;
                 startBtn.click();
                 combo = 0;
-                time = [0,0,0,0];
+                noteNum = [0,0,0,0];
                 nowTime = [0,0,0,0];
                 settle(ComboList,score);
                 ComboList = [];
@@ -1148,6 +1229,9 @@
                 localStorage.setItem(event,"false");
             }
         }
+        
+
+
         
         
     </script>
