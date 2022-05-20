@@ -543,7 +543,21 @@
             margin: 10px 50px;
         }
 
-
+        .tip {
+            position: fixed;
+            width: 200px;
+            height: 50px;
+            background-color: rgba(255, 0, 0, 0.7);
+            box-shadow: 1px 1px 40px 3px rgba(82, 82, 82, 0.2);
+            font-size: 14px;
+            top: 10px;
+            left: calc(50% - 100px);
+            text-align: center;
+            backdrop-filter: blur(2px);
+            border-radius: 10px;
+            color: white;
+            z-index: 10;
+        }
         
     </style>
     <link rel="stylesheet" href="Settle/settle.css">
@@ -553,9 +567,13 @@
     <link rel="stylesheet" href="" id="songTheme">
 </head>
 <body>
+    <div class="tipHide">
+        <span></span>
+    </div>
     <audio></audio>
     <!-- 三个按钮 -->
     <input class="none" type="file" id="file">
+    <input class="none" type="file" id="musicFile">
     <button id="noteIn" onclick="show('fileIn')">&#xea45</button>
     <button id="startBtn">&#xe655</button>
     <button id="musicChoose" onclick="show('showMusic')">&#xeb90</button>
@@ -786,14 +804,11 @@
 
 
 
-        // 导入文件
-        // noteIn.onclick = function() {
-        //     document.querySelector("#fileIn").className = "fileBoxShow";
-        // }
-
+        
+        var musicFile = document.querySelector("#musicFile");
         // 导入音乐
         function MusicFileIn() {
-            musicPlay.src = prompt("输入音乐路径");
+            musicFile.click();
         }
         function NoteFileIn() {
             filesInput.click();
@@ -1155,8 +1170,7 @@
         
 
         // 获取谱面文件
-        filesInput.addEventListener("change",hadleFiles,false);
-        function hadleFiles() {
+        filesInput.addEventListener("change",() => {
             var files = document.getElementById("file").files[0];
             var reader = new FileReader();
             reader.readAsText(files);
@@ -1165,7 +1179,12 @@
                 console.log(json);
                 noteData = json;
             }
-        }
+        },false);
+        
+        // 获取音频文件
+        musicFile.addEventListener("change",() => {
+            musicPlay.src = window.URL.createObjectURL(document.querySelector("#musicFile").files[0])
+        })
 
 
         // 绑定键盘事件
@@ -1232,8 +1251,23 @@
         
 
 
+        function giveATip(words, type) {
+            document.querySelector(".tipHide").className = "tip";
+            document.querySelector(".tip").innerHTML = words;
+            if (typeof(type) != "string") {
+                return false;
+                console.log("如果你看到我，那么你的函数就写错了");
+            }
+            switch (type) {
+                case "green":
+                    document.querySelector(".tip").setAttribute("style", "background-color: rgba(0, 255, 0, 0.7);");
+                    break;
+                case "red":
+                    document.querySelector(".tip").setAttribute("style", "background-color: rgba(255, 0, 0, 0.7)")
+            }
+        }
         
-        
+        // giveATip("你好", "green")
     </script>
     <!-- 选择曲目界面的JS脚本文件 -->
     <script src="JS/ChooseMusic.js"></script>
