@@ -12,16 +12,19 @@
         }
 
         input {
-            height: 25px;
-            border: none;
-            border-bottom: gray 1px solid;
-            box-sizing: border-box;
-            transition: all 0.2s;
-        }
-
-        input:focus {
-            border: none;
-            border-bottom: #00C4FF 3px solid;
+            padding: 4px 10px;
+            height: 20px;
+            line-height: 20px;
+            position: relative;
+            cursor: pointer;
+            color: #888;
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            display: inline-block;
+            *display: inline;
+            *zoom: 1
         }
 
         .ctrl {
@@ -199,7 +202,7 @@
 </head>
 
 <body>
-    <label>输入文件路径: <input type="url"></label>
+    <input type="file">
     <audio src="">无法显示</audio>
     <br><br>
     <button class="ctrl" id="start">开始</button>
@@ -228,7 +231,10 @@
         var out = document.querySelector("#out");
 
 
-
+        file.addEventListener("change",() => {
+            play.src = window.URL.createObjectURL(file.files[0]);
+            // play.play();
+        })
 
         function saveJSON(data, filename) {
             if (!data) {
@@ -300,7 +306,6 @@
                 }
             }, 1000)
             setTimeout("play.play()", 3000);
-            play.src = file.value;
             startTime = new Date().getTime();
 
             for (let i = 0; i < noteButton.length; i++) {

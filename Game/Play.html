@@ -543,12 +543,12 @@
             margin: 10px 50px;
         }
 
-        .tip {
+        .tip,
+        .tipHide {
             position: fixed;
             width: 200px;
             height: 50px;
-            background-color: rgba(255, 0, 0, 0.7);
-            box-shadow: 1px 1px 40px 3px rgba(82, 82, 82, 0.2);
+            line-height: 50px;
             font-size: 14px;
             top: 10px;
             left: calc(50% - 100px);
@@ -557,6 +557,15 @@
             border-radius: 10px;
             color: white;
             z-index: 10;
+            transition: all 0.3s;
+
+        }
+        .tip {
+            /* background-color: rgba(255, 0, 0, 0.7); */
+            box-shadow: 1px 1px 40px 3px rgba(82, 82, 82, 0.2);
+        }
+        .tipHide {
+            top: -50px;
         }
         
     </style>
@@ -1169,9 +1178,16 @@
 
         
 
+
+        let fileIsReady = [false, false]
         // 获取谱面文件
         filesInput.addEventListener("change",() => {
+            
             var files = document.getElementById("file").files[0];
+            if (files.type != "application/json") {
+                giveATip("文件错误","red");
+                return;
+            }
             var reader = new FileReader();
             reader.readAsText(files);
             reader.onload = function() {
@@ -1179,11 +1195,32 @@
                 console.log(json);
                 noteData = json;
             }
-        },false);
+            fileIsReady[0] = true;
+            giveATip("上传成功","green");
+            if (fileIsReady[0] && fileIsReady[1]) {
+                document.querySelector("#fileIn").querySelector("button").click();
+                document.querySelector("#showMusic").querySelector("button").click();
+                startBtn.click();
+                fileIsReady = [false, false];
+            }
+        });
         
         // 获取音频文件
         musicFile.addEventListener("change",() => {
-            musicPlay.src = window.URL.createObjectURL(document.querySelector("#musicFile").files[0])
+            if (document.querySelector("#musicFile").files[0].type.indexOf("audio") == -1) {
+                giveATip("文件错误","red");
+                return;
+            }
+            musicPlay.src = window.URL.createObjectURL(document.querySelector("#musicFile").files[0]);
+            fileIsReady[1] = true;
+            giveATip("上传成功","green");
+            if (fileIsReady[0] && fileIsReady[1]) {
+                document.querySelector("#fileIn").querySelector("button").click();
+                document.querySelector("#showMusic").querySelector("button").click();
+
+                startBtn.click();
+                fileIsReady = [false, false];
+            }
         })
 
 
@@ -1263,11 +1300,15 @@
                     document.querySelector(".tip").setAttribute("style", "background-color: rgba(0, 255, 0, 0.7);");
                     break;
                 case "red":
-                    document.querySelector(".tip").setAttribute("style", "background-color: rgba(255, 0, 0, 0.7)")
+                    document.querySelector(".tip").setAttribute("style", "background-color: rgba(200, 25, 25, 0.7)");
             }
+            setTimeout(() => {
+                document.querySelector(".tip").innerHTML = "";
+                document.querySelector(".tip").removeAttribute("style");
+                document.querySelector(".tip").className = "tipHide";
+            },2000)
         }
         
-        // giveATip("你好", "green")
     </script>
     <!-- 选择曲目界面的JS脚本文件 -->
     <script src="JS/ChooseMusic.js"></script>
