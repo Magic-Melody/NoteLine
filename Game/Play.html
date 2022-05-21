@@ -1200,8 +1200,10 @@
             if (fileIsReady[0] && fileIsReady[1]) {
                 document.querySelector("#fileIn").querySelector("button").click();
                 document.querySelector("#showMusic").querySelector("button").click();
-                startBtn.click();
                 fileIsReady = [false, false];
+                setTimeout(() => {
+                    startBtn.click();
+                },100)
             }
         });
         
@@ -1217,9 +1219,8 @@
             if (fileIsReady[0] && fileIsReady[1]) {
                 document.querySelector("#fileIn").querySelector("button").click();
                 document.querySelector("#showMusic").querySelector("button").click();
-
-                startBtn.click();
                 fileIsReady = [false, false];
+                startBtn.click();
             }
         })
 
@@ -1297,10 +1298,10 @@
             }
             switch (type) {
                 case "green":
-                    document.querySelector(".tip").setAttribute("style", "background-color: rgba(0, 255, 0, 0.7);");
+                    document.querySelector(".tip").setAttribute("style", "background-color: rgba(25, 205, 25, 0.7);");
                     break;
                 case "red":
-                    document.querySelector(".tip").setAttribute("style", "background-color: rgba(200, 25, 25, 0.7)");
+                    document.querySelector(".tip").setAttribute("style", "background-color: rgba(63 ,205 ,22 ,0.7)");
             }
             setTimeout(() => {
                 document.querySelector(".tip").innerHTML = "";
