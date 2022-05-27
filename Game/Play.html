@@ -24,6 +24,9 @@
             width: 5px;
             
         }
+        body {
+            height: 100%;
+        }
         .clearFloat::after {
             clear: both;
         }
@@ -75,7 +78,9 @@
 
         /* 去掉 body 的外边距 */
         body {
+            padding: 0;
             margin: 0;
+            overflow: hidden;
             transition: all 0.5s;
         }
         /* 设置基础的界面样式 */
@@ -545,7 +550,7 @@
 
         .tip,
         .tipHide {
-            position: fixed;
+            position: absolute;
             width: 200px;
             height: 50px;
             line-height: 50px;
@@ -569,6 +574,7 @@
         }
         
     </style>
+    <script src="JS/MD5.js"></script>
     <link rel="stylesheet" href="Settle/settle.css">
     <link rel="stylesheet" id="theme" type="text/css">
     <link rel="stylesheet" href="" id="touchCSS" type="text/css">
