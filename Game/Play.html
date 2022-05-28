@@ -12,8 +12,10 @@
     <script src="JSON/song2.json"></script>
     <script src="JSON/song3.json"></script>
     <script src="JSON/song4.json"></script>
+    <script src="JSON/sp1.json"></script>
     <!-- 分割线 -->
     <script src="JS/LoadJSON.js"></script>
+    
     <script>
         if (localStorage.getItem("FirstLoad") == null) {
             localStorage.setItem("FirstLoad","true");
@@ -390,7 +392,7 @@
             height: 160px;
             border-radius: 10px;
             text-align: center;
-            margin-left: 40px;
+            margin-left: 33.3px;
             margin-top: 10px;
             transition: all 0.2s;
         }
@@ -485,12 +487,27 @@
             bottom: calc(50% - 250px);
         } */
 
-        #thanks p{
+        #thanks p {
             font-family: 'Microsoft YaHei';
             font-weight: 600;
             user-select: text;
         }
-
+        #thanks a {
+            font-family: 'Microsoft YaHei';
+            font-weight: 600;
+            display: inline-block;
+            height: 35px;
+            width: 100px;
+            background-color: #00C4FF;
+            line-height: 35px;
+            padding: 0 5px 0 5px;
+            color: white;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        #thanks a:active {
+            transform: scale(0.9,0.9);
+        }
         
         .main {
             margin-top: 75px;
@@ -659,6 +676,8 @@
             <h1>游戏版本</h1>
             <p>1.0.2</p>
             <br>
+            <a>获取更多谱面</a>
+            <br><br>
         </div>
         
     </div>
@@ -684,6 +703,11 @@
                 <img src="SongPictures/default.png" alt="" class="songPic">
                 <span>Revolt</span>
             </div>
+            <div class="song" id="sp1">
+                <img src="SongPictures/sp1.jpg" alt="" class="songPic">
+                <span>Genshin Impact Main Theme</span>
+            </div>
+            
         </div>
         
     </div>
@@ -760,7 +784,8 @@
         var musicPlayOut;
 
         // 开始按钮
-
+        let paused = 0;
+        let pauseTime = 0
         // 当前是否为开始状态
         var isStart = false;
         startBtn.onclick = function() {
@@ -780,13 +805,23 @@
                 clearInterval(wm);
                 this.innerHTML = "&#xe655";
                 isStart = false;
-                musicPlay.pause();
+                // musicPlay.pause();
+                ComboList[ComboList.length] = combo;
+                if (!isEnd) {
+                    musicChoose.click();
+                }
+                noteNum = [0,0,0,0];
+                noteTime = [0,0,0,0];
+                combo = 0;
+                musicPlay.load();
                 return;
+                
             }
             startTime = new Date().getTime();
+            isEnd = false;
             musicPlayOut = setTimeout(function() {
                 if (isStart) {
-                    musicPlay.play();
+                    musicPlay.play(); 
                 } else {
                     return;
                 }
@@ -796,10 +831,12 @@
             tr2 = setInterval(makeNote, 10, 2);
             tr3 = setInterval(makeNote, 10, 3);
             tr4 = setInterval(makeNote, 10, 4);
+            
             // 判断音乐是否结束
             wm = setInterval(endMusic,1000);
             this.innerHTML = "&#xe65d";
             isStart = true;
+            
         }
 
         var score = 0;
@@ -877,6 +914,9 @@
                 noteNum[track]++;
                 // 判断
                 setTimeout(function() {
+                    if (!isStart) {
+                        return;
+                    }
                     // 如果判定点从未按过，那也算为 miss （这串代码已经没用了，但是懒得删
                     // 现在已经删掉了
                     // 如果按下时的时间减去音符生成的时间小于 1300 而且 大于 700 ，那就算为 命中
@@ -1163,13 +1203,15 @@
         //         },1000);
         //     }
         // }
+        let isEnd = false;
         // 判断音乐是否结束
+        
         function endMusic() {
             var now = new Date().getTime();
             var timeToStart = now - startTime;
             if (noteData.musicLong <= timeToStart) {
                 ComboList[ComboList.length] = combo;
-                startBtn.click();
+                isEnd = true;
                 combo = 0;
                 noteNum = [0,0,0,0];
                 nowTime = [0,0,0,0];
@@ -1177,7 +1219,8 @@
                 ComboList = [];
                 score = 0;
                 startTime = 0;
-                musicPlay.load();
+                startBtn.click();
+                
             }
             
         }
@@ -1307,7 +1350,7 @@
                     document.querySelector(".tip").setAttribute("style", "background-color: rgba(25, 205, 25, 0.7);");
                     break;
                 case "red":
-                    document.querySelector(".tip").setAttribute("style", "background-color: rgba(63 ,205 ,22 ,0.7)");
+                    document.querySelector(".tip").setAttribute("style", "background-color: rgba(245 ,5 ,5 ,0.7)");
             }
             setTimeout(() => {
                 document.querySelector(".tip").innerHTML = "";
@@ -1323,6 +1366,6 @@
     <script src="JS/Touch.js"></script>
     <script src="JS/ToggleSwitchSave.js"></script>
     <script src="Settle/settle.js"></script>
-    
+    <!-- <script src="JS/MoreMusic.js"></script> -->
 </body>
 </html>
