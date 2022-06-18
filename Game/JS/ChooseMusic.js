@@ -17,6 +17,7 @@ function closeThanks() {
 
 var songBox = document.querySelector(".songBox");
 
+// 在这里加入选歌脚本
 songBox.querySelector("#song1").onclick = () => {
     document.querySelector("#songTheme").setAttribute("href","");
     noteData = JSON.parse(localStorage.getItem("song1Data"));
@@ -37,14 +38,14 @@ songBox.querySelector("#song3").onclick = () => {
 }
 
 songBox.querySelector("#song4").onclick = () => {
-    document.querySelector("#songTheme").setAttribute("href","ActivityTheme/RevoltTheme.css");
+    document.querySelector("#songTheme").setAttribute("href","SongTheme/RevoltTheme.css");
     noteData = JSON.parse(localStorage.getItem("song4Data"));
     closeTheMusicWindow();
     musicPlay.src = "Song/song4.mp3";
 }
 
 songBox.querySelector("#sp1").onclick = () => {
-    document.querySelector("#songTheme").setAttribute("href","ActivityTheme/Genshin_Impact.css");
+    document.querySelector("#songTheme").setAttribute("href","SongTheme/SP/Genshin_Impact.css");
     noteData = JSON.parse(localStorage.getItem("sp1Data"));
     closeTheMusicWindow();
     musicPlay.src = "Song/sp1.mp3";
@@ -62,7 +63,7 @@ function clearData() {
     }
 }
 function closeTheMusicWindow() {
-    document.querySelector("#showMusic").querySelector(".closeBtn").click()
+    allClose();
     musicPlay.load();
     startBtn.click();
     ComboList[ComboList.length] = combo;

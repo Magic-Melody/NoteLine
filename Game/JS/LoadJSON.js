@@ -1,3 +1,4 @@
+// song 在此声明
 localStorage.setItem("song1Data",JSON.stringify(song1Data));
 song1Data = null;
 localStorage.setItem("song2Data",JSON.stringify(song2Data));

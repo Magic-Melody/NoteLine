@@ -1,4 +1,4 @@
 body .window {
-    background-color: rgba(242, 242, 242, 0.7);
-    backdrop-filter: blur(20px);
+    background-color: rgba(242, 242, 242, 0);
+    backdrop-filter: blur(50px);
 }

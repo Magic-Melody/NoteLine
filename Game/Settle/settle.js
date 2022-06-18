@@ -4,7 +4,9 @@ var wordsList = {
 }
 
 function settle(data,num) {
+    
     document.querySelector("#settle").className = "windowSP";
+    
     var window = document.querySelector(".windowSP");
     window.querySelector(".combo").innerHTML = Math.max.apply(Math,data);
     var whole = eval(data.join("+"));
@@ -38,16 +40,16 @@ function settle(data,num) {
     window.querySelector(".score").innerHTML = num;
     window.querySelector(".words").innerHTML = words;
 
-
-
     document.querySelector(".windowSP").querySelector(".ok").addEventListener("click",function() {
         document.querySelector("#settle").style.opacity = "0";
         document.querySelector("#settle").style.transform = "scale(0.5,0.5)";
         document.querySelector("#settle").style.boxShadow = "0px 0px 0px 0px rgba(0, 0, 0, 0)";
-        document.querySelector("#musicChoose").click();
+        show("showMusic");
         setTimeout(function() {
             document.querySelector("#settle").className = "none";
             document.querySelector("#settle").setAttribute("style","");
         },1000);
     });
+
+    
 }

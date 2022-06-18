@@ -1,6 +1,9 @@
 body {
     background-color: #ceeff9;
 }
+.window {
+    background-color: #ceeff9;
+}
 /* 将颜色填充上 */
 #line1 .circle,
 #line1 .move,

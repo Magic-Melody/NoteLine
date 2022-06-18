@@ -1,6 +1,9 @@
 body {
     background-color: #FFF5EE;
 }
+.window {
+    border-color: #FFF5EE;
+}
 /* 将颜色填充上 */
 #line1 .circle,
 #line1 .move,

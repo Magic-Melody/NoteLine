@@ -1,8 +1,8 @@
 .windowSP {
     height: 500px;
     width: 800px;
-    background-color: rgba(242, 242, 242, 0.4);
-    backdrop-filter: blur(20px);
+    background-color: rgba(242, 242, 242, 0);
+    backdrop-filter: blur(50px);
     position: fixed;
     top: calc(50% - 250px);
     left: calc(50% - 400px);

@@ -1,0 +1,44 @@
+body {
+    background-color: #fff9de;
+}
+.window {
+    background-color: #fff9de;
+}
+/* 将颜色填充上 */
+#line1 .circle,
+#line1 .move,
+#line1 .judgment,
+#line1 .btnOn {
+    background-color: #ffc13b !important;
+}
+#line2 .circle,
+#line2 .move,
+#line2 .judgment,
+#line2 .btnOn {
+    background-color: #00e1ff !important;
+}
+#line3 .circle,
+#line3 .move,
+#line3 .judgment,
+#line3 .btnOn {
+    background-color: #27e90d !important;
+}
+#line4 .circle,
+#line4 .move,
+#line4 .judgment,
+#line4 .btnOn {
+    background-color: #ffa55b !important;
+}
+
+#line1 {
+    border-color: #ffc13b !important;
+}
+#line2 {
+    border-color: #00e1ff !important;
+}
+#line3 {
+    border-color: #27e90d !important;
+}
+#line4 {
+    border-color: #ffa55b !important;
+}

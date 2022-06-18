@@ -302,7 +302,7 @@
             transition: all 0.5s ease;
             border-radius: 25px;
             position: fixed;
-            background-color: rgba(242, 242, 242);
+            background-color: rgb(255, 255, 255);
             /* backdrop-filter: blur(20px); */
             height: 500px;
             width: 800px;
@@ -318,7 +318,7 @@
         .show,
         .firstShow {
             bottom: calc(50% - 250px);
-            box-shadow: 0px 0px 67px -34px grey;
+            box-shadow: 0px 0px 67px -34px rgba(114, 114, 114, 0.3);
         }
 
         
@@ -590,6 +590,51 @@
             top: -50px;
         }
         
+        .welcome {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: rgb(255, 255, 255, 0);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            color: rgb(0, 0, 0, 1);
+            font-size: 100px;
+            animation: start 0.5s 2s;
+            animation-fill-mode: forwards;
+        }
+        .welcome span {
+            position: absolute;
+            height: 500px;
+            width: 1200px;
+            text-align: center;
+            left: calc(50% - 600px);
+            top: calc(50% - 250px);
+            line-height: 500px;
+            animation: textClear 0.7s 3s;
+            animation-fill-mode: forwards;
+        }
+        @keyframes start {
+            0% {
+                background-color: rgb(255, 255, 255, 0);
+            }
+            100% {
+                background-color: rgb(255, 255, 255, 0);
+                backdrop-filter: blur(0px);
+            }
+        }
+        @keyframes textClear {
+            from {
+                color: rgb(0, 0, 0, 1);
+            }
+            to {
+                color: rgb(0, 0, 0, 0);
+                letter-spacing: 100px;
+                /* transform: translateY(20px); */
+            }
+        }
+        
     </style>
     <script src="JS/MD5.js"></script>
     <link rel="stylesheet" href="Settle/settle.css">
@@ -599,6 +644,9 @@
     <link rel="stylesheet" href="" id="songTheme">
 </head>
 <body>
+    <div class="welcome">
+        <span>Welcome</span>
+    </div>
     <div class="tipHide">
         <span></span>
     </div>
@@ -682,7 +730,7 @@
         
     </div>
     <!-- 选择曲目和导入曲目功能 -->
-    <div class="firstShow window" id="showMusic">
+    <div class="close window" id="showMusic">
         <h1>选择曲目</h1>
         <!-- 关闭按钮 -->
         <button class="closeBtn">&#xe711</button>
@@ -782,7 +830,14 @@
 
         // 音乐定时播放
         var musicPlayOut;
-
+        
+        setTimeout(() => {
+            document.querySelector(".welcome").style.display = "none";
+            setTimeout(() => {
+                show("showMusic");
+            }, 500);
+        },3700)
+        
         // 开始按钮
         let paused = 0;
         let pauseTime = 0
@@ -790,7 +845,7 @@
         var isStart = false;
         startBtn.onclick = function() {
             if (noteData == undefined) {
-                alert("谱面文件为空");
+                giveATip("谱面文件为空","red");
                 return;
             }
             if (isStart) {
@@ -808,7 +863,7 @@
                 // musicPlay.pause();
                 ComboList[ComboList.length] = combo;
                 if (!isEnd) {
-                    musicChoose.click();
+                    show("showMusic");
                 }
                 noteNum = [0,0,0,0];
                 noteTime = [0,0,0,0];
@@ -850,12 +905,19 @@
         
         // 统一式开启按钮
         function show(element) {
+            allClose();
             document.querySelector("#" + element).classList.remove("close");
             document.querySelector("#" + element).classList.add("show");
         }
+        
 
-
-
+        function allClose() {
+            var close = document.querySelectorAll(".closeBtn");
+            
+            for (let i = 0; i < close.length; i++) {
+                close[i].click();
+            }
+        }
         
         var musicFile = document.querySelector("#musicFile");
         // 导入音乐
